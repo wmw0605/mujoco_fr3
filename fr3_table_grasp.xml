@@ -1,0 +1,342 @@
+<mujoco model="fr3_table_grasp">
+  <compiler angle="radian" meshdir="franka_fr3/assets" autolimits="true"/>
+
+  <option timestep="0.002" integrator="implicitfast" gravity="0 0 -9.81" cone="elliptic" impratio="10"/>
+
+  <visual>
+    <headlight diffuse="0.7 0.7 0.7" ambient="0.25 0.25 0.25" specular="0.15 0.15 0.15"/>
+    <rgba haze="0.18 0.22 0.28 1"/>
+    <global azimuth="130" elevation="-20"/>
+  </visual>
+
+  <statistic center="0.1 0 0.7" extent="1.8"/>
+
+  <default>
+    <default class="fr3">
+      <joint damping="0.21" armature="0.195" frictionloss="1.137"/>
+      <default class="visual">
+        <geom type="mesh" group="2" contype="0" conaffinity="0"/>
+      </default>
+      <default class="collision">
+        <geom type="mesh" group="3" mass="0" density="0"/>
+      </default>
+      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4"/>
+    </default>
+    <default class="finger_collision">
+      <geom group="3" type="box" friction="1.6 0.08 0.02" solref="-1200 -30" solimp="0.98 0.995 0.001"/>
+    </default>
+    <default class="table_geom">
+      <geom type="box" rgba="0.45 0.32 0.22 1" friction="1.0 0.15 0.02"/>
+    </default>
+    <default class="leg_geom">
+      <geom type="box" rgba="0.18 0.18 0.2 1" friction="0.8 0.05 0.01"/>
+    </default>
+  </default>
+
+  <asset>
+    <!-- Scene textures & materials -->
+    <texture type="skybox" builtin="gradient" rgb1="0.26 0.38 0.52" rgb2="0.98 0.99 1.0" width="512" height="3072"/>
+    <texture name="ground_tex" type="2d" builtin="checker" rgb1="0.2 0.26 0.32" rgb2="0.12 0.16 0.2" width="256" height="256"/>
+    <material name="ground_mat" texture="ground_tex" texrepeat="6 6" texuniform="true" reflectance="0.15"/>
+    <material name="cube_mat" rgba="0.89 0.55 0.18 1"/>
+    <material name="orange_mat" rgba="1.0 0.55 0.0 1"/>
+    <material name="lemon_mat" rgba="0.95 0.9 0.15 1"/>
+    <material name="tomato_mat" rgba="0.85 0.12 0.08 1"/>
+    <material name="green_box_mat" rgba="0.2 0.72 0.35 1"/>
+    <material name="box_mat" rgba="0.25 0.65 0.55 1"/>
+    <material name="off_white" rgba="0.901961 0.921569 0.929412 1"/>
+    <material name="d435i_silver" rgba="0.75 0.78 0.8 1"/>
+
+    <!-- FR3 materials (official Menagerie) -->
+    <material name="black" rgba=".2 .2 .2 1"/>
+    <material name="white" rgba="1 1 1 1"/>
+    <material name="red" rgba="1 0.072272 0.039546 1"/>
+    <material name="gray" rgba="0.863156 0.863156 0.863157 1"/>
+    <material name="button_green" rgba="0.102241 0.571125 0.102242 1"/>
+    <material name="button_red" rgba="0.520996 0.008023 0.013702 1"/>
+    <material name="button_blue" rgba="0.024157 0.445201 0.737911 1"/>
+
+    <!-- FR3 visual meshes -->
+    <mesh file="link0_0.obj"/>
+    <mesh file="link0_1.obj"/>
+    <mesh file="link0_2.obj"/>
+    <mesh file="link0_3.obj"/>
+    <mesh file="link0_4.obj"/>
+    <mesh file="link0_5.obj"/>
+    <mesh file="link0_6.obj"/>
+    <mesh file="link1.obj"/>
+    <mesh file="link2.obj"/>
+    <mesh file="link3_0.obj"/>
+    <mesh file="link3_1.obj"/>
+    <mesh file="link4_0.obj"/>
+    <mesh file="link4_1.obj"/>
+    <mesh file="link5_0.obj"/>
+    <mesh file="link5_1.obj"/>
+    <mesh file="link5_2.obj"/>
+    <mesh file="link6_0.obj"/>
+    <mesh file="link6_1.obj"/>
+    <mesh file="link6_2.obj"/>
+    <mesh file="link6_3.obj"/>
+    <mesh file="link6_4.obj"/>
+    <mesh file="link6_5.obj"/>
+    <mesh file="link6_6.obj"/>
+    <mesh file="link6_7.obj"/>
+    <mesh file="link7_0.obj"/>
+    <mesh file="link7_1.obj"/>
+    <mesh file="link7_2.obj"/>
+    <mesh file="link7_3.obj"/>
+
+    <!-- FR3 collision meshes -->
+    <mesh name="link0_coll" file="link0.stl"/>
+    <mesh name="link1_coll" file="link1.stl"/>
+    <mesh name="link2_coll" file="link2.stl"/>
+    <mesh name="link3_coll" file="link3.stl"/>
+    <mesh name="link4_coll" file="link4.stl"/>
+    <mesh name="link5_coll" file="link5.stl"/>
+    <mesh name="link6_coll" file="link6.stl"/>
+    <mesh name="link7_coll" file="link7.stl"/>
+
+    <!-- Franka Hand meshes (from Menagerie Panda) -->
+    <mesh file="hand_0.obj"/>
+    <mesh file="hand_1.obj"/>
+    <mesh file="hand_2.obj"/>
+    <mesh file="hand_3.obj"/>
+    <mesh file="hand_4.obj"/>
+    <mesh file="finger_0.obj"/>
+    <mesh file="finger_1.obj"/>
+    <mesh name="hand_coll" file="hand.stl"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0.5 -0.2 2.2" dir="-0.1 0 -1" directional="true"/>
+    <light pos="-0.8 0.8 1.6" diffuse="0.35 0.35 0.4" specular="0.1 0.1 0.1"/>
+    <geom name="floor" type="plane" size="0 0 0.05" material="ground_mat"/>
+
+    <camera name="overview" pos="1.15 -1.35 1.35" xyaxes="0.77 0.64 0 -0.33 0.39 0.86"/>
+    <camera name="grasp_close" pos="0.18 -0.75 1.02" xyaxes="0.99 0.1 0 -0.05 0.48 0.88"/>
+
+    <!-- Table -->
+    <body name="table" pos="0.18 0 0.37">
+      <geom name="table_top" class="table_geom" size="0.52 0.78 0.03" pos="0 0 0.35"/>
+      <geom class="leg_geom" size="0.04 0.04 0.35" pos="0.44 0.7 0"/>
+      <geom class="leg_geom" size="0.04 0.04 0.35" pos="0.44 -0.7 0"/>
+      <geom class="leg_geom" size="0.04 0.04 0.35" pos="-0.44 0.7 0"/>
+      <geom class="leg_geom" size="0.04 0.04 0.35" pos="-0.44 -0.7 0"/>
+    </body>
+
+    <!-- Graspable objects -->
+    <body name="target_cube" pos="0.32 0.0 0.782">
+      <freejoint/>
+      <inertial pos="0 0 0" mass="0.08" diaginertia="2e-4 2e-4 2e-4"/>
+      <geom name="cube" type="box" size="0.022 0.022 0.022" material="cube_mat" friction="1.2 0.08 0.02" solref="-1500 -40"/>
+    </body>
+
+    <body name="orange" pos="0.40 -0.08 0.782">
+      <freejoint/>
+      <inertial pos="0 0 0" mass="0.15" diaginertia="3e-4 3e-4 3e-4"/>
+      <geom name="orange_geom" type="cylinder" size="0.022 0.022" material="orange_mat" friction="1.4 0.1 0.02" solref="-1500 -40"/>
+    </body>
+
+    <body name="lemon" pos="0.40 0.08 0.780">
+      <freejoint/>
+      <inertial pos="0 0 0" mass="0.10" diaginertia="2.5e-4 2.5e-4 2.5e-4"/>
+      <geom name="lemon_geom" type="box" size="0.028 0.018 0.020" material="lemon_mat" friction="1.2 0.08 0.02" solref="-1500 -40"/>
+    </body>
+
+    <body name="tomato" pos="0.24 -0.08 0.782">
+      <freejoint/>
+      <inertial pos="0 0 0" mass="0.12" diaginertia="2.5e-4 2.5e-4 2.5e-4"/>
+      <geom name="tomato_geom" type="box" size="0.022 0.022 0.022" material="tomato_mat" friction="1.4 0.1 0.02" solref="-1500 -40"/>
+    </body>
+
+    <body name="small_box" pos="0.24 0.08 0.780">
+      <freejoint/>
+      <inertial pos="0 0 0" mass="0.06" diaginertia="1.5e-4 1.5e-4 1.5e-4"/>
+      <geom name="small_box_geom" type="box" size="0.018 0.018 0.020" material="green_box_mat" friction="1.2 0.08 0.02" solref="-1500 -40"/>
+    </body>
+
+    <!-- Container box (open-top, static, large) -->
+    <body name="box_container" pos="0.38 -0.22 0.75">
+      <!-- Bottom -->
+      <geom name="box_bottom" type="box" size="0.08 0.08 0.003" pos="0 0 0.003"
+            material="box_mat" friction="1.0 0.15 0.02"/>
+      <!-- Walls (inner clearance ~14.6cm x 14.6cm x 6cm) -->
+      <geom name="box_wall_xp" type="box" size="0.003 0.08 0.033" pos="0.077 0 0.039"
+            material="box_mat" friction="1.0 0.15 0.02"/>
+      <geom name="box_wall_xn" type="box" size="0.003 0.08 0.033" pos="-0.077 0 0.039"
+            material="box_mat" friction="1.0 0.15 0.02"/>
+      <geom name="box_wall_yp" type="box" size="0.08 0.003 0.033" pos="0 0.077 0.039"
+            material="box_mat" friction="1.0 0.15 0.02"/>
+      <geom name="box_wall_yn" type="box" size="0.08 0.003 0.033" pos="0 -0.077 0.039"
+            material="box_mat" friction="1.0 0.15 0.02"/>
+      <site name="box_center" pos="0 0 0.03" rgba="0.2 0.8 0.5 0.5"/>
+    </body>
+
+    <!-- FR3 arm (official Menagerie mesh model) mounted on table -->
+    <body name="base" pos="-0.18 0 0.76" childclass="fr3">
+      <body name="fr3_link0">
+        <geom mesh="link0_0" material="black" class="visual"/>
+        <geom mesh="link0_1" material="white" class="visual"/>
+        <geom mesh="link0_2" material="white" class="visual"/>
+        <geom mesh="link0_3" material="white" class="visual"/>
+        <geom mesh="link0_4" material="white" class="visual"/>
+        <geom mesh="link0_5" material="red" class="visual"/>
+        <geom mesh="link0_6" material="black" class="visual"/>
+        <geom name="fr3_link0_collision" mesh="link0_coll" class="collision"/>
+        <body name="fr3_link1" pos="0 0 0.333">
+          <inertial pos="4.128e-07 -0.0181251 -0.0386036" quat="0.998098 -0.0605364 0.00380499 0.0110109" mass="2.92747"
+            diaginertia="0.0239286 0.0227246 0.00610634"/>
+          <joint name="fr3_joint1" axis="0 0 1" range="-2.7437 2.7437" actuatorfrcrange="-87 87"/>
+          <geom name="fr3_link1_collision" class="collision" mesh="link1_coll"/>
+          <geom material="white" mesh="link1" class="visual"/>
+          <body name="fr3_link2" quat="1 -1 0 0">
+            <inertial pos="0.00318289 -0.0743222 0.00881461" quat="0.502599 0.584437 -0.465998 0.434366" mass="2.93554"
+              diaginertia="0.0629567 0.0411924 0.0246371"/>
+            <joint name="fr3_joint2" axis="0 0 1" range="-1.7837 1.7837" actuatorfrcrange="-87 87"/>
+            <geom material="white" mesh="link2" class="visual"/>
+            <geom name="fr3_link2_collision" class="collision" mesh="link2_coll"/>
+            <body name="fr3_link3" pos="0 -0.316 0" quat="1 1 0 0">
+              <inertial pos="0.0407016 -0.00482006 -0.0289731" quat="0.921025 -0.244161 0.155272 0.260745" mass="2.2449"
+                diaginertia="0.0267409 0.0189869 0.0171587"/>
+              <joint name="fr3_joint3" axis="0 0 1" range="-2.9007 2.9007" actuatorfrcrange="-87 87"/>
+              <geom mesh="link3_0" material="white" class="visual"/>
+              <geom mesh="link3_1" material="black" class="visual"/>
+              <geom name="fr3_link3_collision" class="collision" mesh="link3_coll"/>
+              <body name="fr3_link4" pos="0.0825 0 0" quat="1 1 0 0">
+                <inertial pos="-0.0459101 0.0630493 -0.00851879" quat="0.438018 0.803311 0.00937812 0.403414"
+                  mass="2.6156" diaginertia="0.05139 0.0372717 0.0160047"/>
+                <joint name="fr3_joint4" axis="0 0 1" range="-3.0421 -0.1518" actuatorfrcrange="-87 87"/>
+                <geom mesh="link4_0" material="white" class="visual"/>
+                <geom mesh="link4_1" material="black" class="visual"/>
+                <geom name="fr3_link4_collision" class="collision" mesh="link4_coll"/>
+                <body name="fr3_link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
+                  <inertial pos="-0.00160396 0.0292536 -0.0972966" quat="0.919031 0.125604 0.0751531 -0.366003"
+                    mass="2.32712" diaginertia="0.0579335 0.0449144 0.0130634"/>
+                  <joint name="fr3_joint5" axis="0 0 1" range="-2.8065 2.8065" actuatorfrcrange="-12 12"
+                    armature="0.074" frictionloss="0.763"/>
+                  <geom mesh="link5_0" material="white" class="visual"/>
+                  <geom mesh="link5_1" material="white" class="visual"/>
+                  <geom mesh="link5_2" material="black" class="visual"/>
+                  <geom name="fr3_link5_collision" class="collision" mesh="link5_coll"/>
+                  <body name="fr3_link6" quat="1 1 0 0">
+                    <inertial pos="0.0597131 -0.0410295 -0.0101693" quat="0.621301 0.552665 0.510011 0.220081"
+                      mass="1.81704" diaginertia="0.0175039 0.0161123 0.00193529"/>
+                    <joint name="fr3_joint6" axis="0 0 1" range="0.5445 4.5169" actuatorfrcrange="-12 12"
+                      armature="0.074" frictionloss="0.44"/>
+                    <geom mesh="link6_0" material="button_green" class="visual"/>
+                    <geom mesh="link6_1" material="white" class="visual"/>
+                    <geom mesh="link6_2" material="white" class="visual"/>
+                    <geom mesh="link6_3" material="gray" class="visual"/>
+                    <geom mesh="link6_4" material="button_red" class="visual"/>
+                    <geom mesh="link6_5" material="white" class="visual"/>
+                    <geom mesh="link6_6" material="black" class="visual"/>
+                    <geom mesh="link6_7" material="button_blue" class="visual"/>
+                    <geom name="fr3_link6_collision" class="collision" mesh="link6_coll"/>
+                    <body name="fr3_link7" pos="0.088 0 0" quat="1 1 0 0">
+                      <inertial pos="0.00452258 0.00862619 -0.0161633" quat="0.727579 0.0978688 -0.24906 0.63168"
+                        mass="0.627143" diaginertia="0.000223836 0.000223642 5.64132e-07"/>
+                      <joint name="fr3_joint7" axis="0 0 1" range="-3.0159 3.0159" actuatorfrcrange="-12 12"
+                        armature="0.074" frictionloss="0.248"/>
+                      <geom mesh="link7_0" material="black" class="visual"/>
+                      <geom mesh="link7_1" material="white" class="visual"/>
+                      <geom mesh="link7_2" material="white" class="visual"/>
+                      <geom mesh="link7_3" material="black" class="visual"/>
+                      <geom name="fr3_link7_collision" class="collision" mesh="link7_coll"/>
+                      <site name="attachment_site" pos="0 0 0.107"/>
+
+                      <!-- Franka Hand (official Menagerie mesh) -->
+                      <body name="hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
+                        <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017"/>
+                        <geom mesh="hand_0" material="off_white" class="visual"/>
+                        <geom mesh="hand_1" material="black" class="visual"/>
+                        <geom mesh="hand_2" material="black" class="visual"/>
+                        <geom mesh="hand_3" material="white" class="visual"/>
+                        <geom mesh="hand_4" material="off_white" class="visual"/>
+                        <geom name="hand_collision" mesh="hand_coll" class="collision"/>
+                        <site name="pinch_site" pos="0 0 0.115" rgba="0.1 0.9 0.6 0.9"/>
+
+                        <!-- RealSense D435i eye-in-hand camera -->
+                        <body name="d435i" pos="-0.05 0.04 0.02" euler="3.14159 0 -1.5708">
+                          <inertial mass="0.072" pos="0 0 0" diaginertia="1e-5 1e-5 1e-5"/>
+                          <geom name="d435i_housing" type="box" size="0.045 0.0125 0.0125"
+                                material="d435i_silver" contype="0" conaffinity="0" group="2"/>
+                          <!-- RGB camera: 640x480, VFOV 42.5° -->
+                          <camera name="d435i_rgb" pos="0.0175 0 0" fovy="42.5"/>
+                          <!-- Depth camera (left IR): 640x480, VFOV 58° -->
+                          <camera name="d435i_depth" pos="-0.0175 0 0" fovy="58"/>
+                        </body>
+
+                        <body name="left_finger" pos="0 0 0.0584">
+                          <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
+                          <joint name="left_finger_slide" type="slide" axis="0 1 0" range="0 0.04" damping="8" armature="0" frictionloss="0"/>
+                          <geom mesh="finger_0" material="off_white" class="visual"/>
+                          <geom mesh="finger_1" material="black" class="visual"/>
+                          <geom name="left_finger_coll" mesh="finger_0" class="collision"/>
+                          <geom name="left_pad1" type="box" size="0.0085 0.004 0.0085" pos="0 0.0055 0.0445" class="finger_collision"/>
+                          <geom name="left_pad2" type="box" size="0.003 0.002 0.003" pos="0.0055 0.002 0.05" class="finger_collision"/>
+                          <geom name="left_pad3" type="box" size="0.003 0.002 0.003" pos="-0.0055 0.002 0.05" class="finger_collision"/>
+                          <geom name="left_pad4" type="box" size="0.003 0.002 0.0035" pos="0.0055 0.002 0.0395" class="finger_collision"/>
+                          <geom name="left_pad5" type="box" size="0.003 0.002 0.0035" pos="-0.0055 0.002 0.0395" class="finger_collision"/>
+                          <site name="left_tip" pos="0 0 0.06" rgba="0.9 0.3 0.3 0.8"/>
+                        </body>
+
+                        <body name="right_finger" pos="0 0 0.0584" quat="0 0 0 1">
+                          <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
+                          <joint name="right_finger_slide" type="slide" axis="0 1 0" range="0 0.04" damping="8" armature="0" frictionloss="0"/>
+                          <geom mesh="finger_0" material="off_white" class="visual"/>
+                          <geom mesh="finger_1" material="black" class="visual"/>
+                          <geom name="right_finger_coll" mesh="finger_0" class="collision"/>
+                          <geom name="right_pad1" type="box" size="0.0085 0.004 0.0085" pos="0 0.0055 0.0445" class="finger_collision"/>
+                          <geom name="right_pad2" type="box" size="0.003 0.002 0.003" pos="0.0055 0.002 0.05" class="finger_collision"/>
+                          <geom name="right_pad3" type="box" size="0.003 0.002 0.003" pos="-0.0055 0.002 0.05" class="finger_collision"/>
+                          <geom name="right_pad4" type="box" size="0.003 0.002 0.0035" pos="0.0055 0.002 0.0395" class="finger_collision"/>
+                          <geom name="right_pad5" type="box" size="0.003 0.002 0.0035" pos="-0.0055 0.002 0.0395" class="finger_collision"/>
+                          <site name="right_tip" pos="0 0 0.06" rgba="0.9 0.3 0.3 0.8"/>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="fr3_joint1_ctrl" joint="fr3_joint1" kp="4500" kv="450" ctrlrange="-2.7437 2.7437"/>
+    <position name="fr3_joint2_ctrl" joint="fr3_joint2" kp="4500" kv="450" ctrlrange="-1.7837 1.7837"/>
+    <position name="fr3_joint3_ctrl" joint="fr3_joint3" kp="3500" kv="350" ctrlrange="-2.9007 2.9007"/>
+    <position name="fr3_joint4_ctrl" joint="fr3_joint4" kp="3500" kv="350" ctrlrange="-3.0421 -0.1518"/>
+    <position name="fr3_joint5_ctrl" joint="fr3_joint5" kp="2000" kv="200" ctrlrange="-2.8065 2.8065"/>
+    <position name="fr3_joint6_ctrl" joint="fr3_joint6" kp="2000" kv="200" ctrlrange="0.5445 4.5169"/>
+    <position name="fr3_joint7_ctrl" joint="fr3_joint7" kp="2000" kv="200" ctrlrange="-3.0159 3.0159"/>
+    <position name="left_finger_ctrl" joint="left_finger_slide" kp="300" kv="20" ctrlrange="0 0.04"/>
+    <position name="right_finger_ctrl" joint="right_finger_slide" kp="300" kv="20" ctrlrange="0 0.04"/>
+  </actuator>
+
+  <equality>
+    <joint joint1="left_finger_slide" joint2="right_finger_slide" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+
+  <contact>
+    <exclude body1="fr3_link0" body2="fr3_link1"/>
+    <exclude body1="left_finger" body2="right_finger"/>
+    <exclude body1="hand" body2="left_finger"/>
+    <exclude body1="hand" body2="right_finger"/>
+  </contact>
+
+  <keyframe>
+    <key
+      name="home"
+      qpos="0.32 0.0 0.782 1 0 0 0
+            0.40 -0.08 0.782 1 0 0 0
+            0.40 0.08 0.780 1 0 0 0
+            0.24 -0.08 0.782 1 0 0 0
+            0.24 0.08 0.780 1 0 0 0
+            0 0 0 -1.57079 0 1.57079 -0.7853 0.04 0.04"
+      ctrl="0 0 0 -1.57079 0 1.57079 -0.7853 0.04 0.04"/>
+  </keyframe>
+</mujoco>
